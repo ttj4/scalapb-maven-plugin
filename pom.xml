@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.ttj.maven.plugins</groupId>
+  <groupId>io.github.ttj4</groupId>
   <artifactId>scalapb-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
   <version>0.1-SNAPSHOT</version>
@@ -95,24 +95,24 @@
 
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/jinto-thomas/scalapb-maven-plugin/issues</url>
+    <url>https://github.com/ttj4/scalapb-maven-plugin/issues</url>
   </issueManagement>
 
   <licenses>
     <license>
       <name>Apache License 2.0</name>
-      <url>https://github.com/jinto-thomas/scalapb-maven-plugin/blob/master/LICENSE</url>
+      <url>https://github.com/ttj4/scalapb-maven-plugin/blob/master/LICENSE</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
 
   <scm>
-    <url>https://github.com/jinto-thomas/scalapb-maven-plugin</url>
+    <url>https://github.com/ttj4/scalapb-maven-plugin</url>
     <connection>
-      scm:git:git://github.com/jinto-thomas/scalapb-maven-plugin.git
+      scm:git:git://github.com/ttj4/scalapb-maven-plugin.git
     </connection>
     <developerConnection>
-      scm:git:ssh://git@github.com:jinto-thomas/scalapb-maven-plugin.git
+      scm:git:ssh://git@github.com:ttj4/scalapb-maven-plugin.git
     </developerConnection>
   </scm>
   <developers>
