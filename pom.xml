@@ -4,7 +4,7 @@
   <groupId>io.github.ttj4</groupId>
   <artifactId>scalapb-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
   <name>ScalaPB Maven Plugin</name>
   <url>http://maven.apache.org</url>
   <inceptionYear>2019</inceptionYear>
@@ -194,7 +194,7 @@
     <url>https://github.com/ttj4/scalapb-maven-plugin</url>
     <connection>scm:git:git://github.com/ttj4/scalapb-maven-plugin.git</connection>
     <developerConnection>scm:git:ssh://git@github.com:ttj4/scalapb-maven-plugin.git</developerConnection>
-    <tag>scalapb-maven-plugin-1.0.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <developers>
