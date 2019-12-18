@@ -4,7 +4,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Component;
-import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
@@ -17,9 +16,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 
-
-@Mojo(name = "compile")
-public class ScalaCompileMojo extends AbstractMojo {
+public abstract  class AbstractScalaPBMojo extends AbstractMojo {
 
     @Parameter(defaultValue = "${project}")
     private MavenProject project;
@@ -37,15 +34,6 @@ public class ScalaCompileMojo extends AbstractMojo {
     private String protocVersion;
 
     /**
-     * Input directory containing *.proto files.
-     * Defaults to <code>${project.basedir}/src/main/proto</code>.
-     *
-     * @parameter property="inputDirectory"
-     */
-    @Parameter(defaultValue = "${project.basedir}/src/main/proto")
-    private File inputDirectory;
-
-    /**
      * Additional include directories.
      *
      * @parameter property="includeDirectories"
@@ -61,15 +49,6 @@ public class ScalaCompileMojo extends AbstractMojo {
      */
     @Parameter(defaultValue = "false")
     private boolean addProtoSources;
-
-    /**
-     * Output directory for Scala generated classes.
-     * Defaults to <code>${project.build.directory}/generated-sources/protobuf</code>.
-     *
-     * @parameter property="outputDirectory"
-     */
-    @Parameter(defaultValue = "${project.build.directory}/generated-sources/protobuf")
-    private File outputDirectory;
 
     /**
      * Set to true if output packages need to be flatten.
@@ -99,15 +78,6 @@ public class ScalaCompileMojo extends AbstractMojo {
     private boolean javaConversions;
 
     /**
-     * Output directory for Java generated classes.
-     * Defaults to <code>${project.build.directory}/generated-sources/protobuf</code>.
-     *
-     * @parameter property="javaOutputDirectory"
-     */
-    @Parameter(defaultValue = "${project.build.directory}/generated-sources/protobuf")
-    private File javaOutputDirectory;
-
-    /**
      * Set to true if grpc related classes are needed
      * Defaults to <code>false</code>.
      *
@@ -117,13 +87,21 @@ public class ScalaCompileMojo extends AbstractMojo {
     private boolean grpc;
 
 
+    abstract protected Path getInputDirectory();
+
+    abstract protected Path getOutputDirectory();
+
+    abstract protected Path getJavaOutputDirectory();
+
+    abstract protected String getInputDirectoryAbsPath();
+
     public void execute() throws MojoExecutionException {
         if (skip) {
             getLog().info("Skip flag set, skipping protobuf compilation.");
             return;
         }
 
-        Path protoPath = Paths.get(inputDirectory.toURI());
+        Path protoPath = getInputDirectory();
         getLog().info("Reading proto files in '" + protoPath + "'.");
 
         Path[] includeDirectoriesPaths = ArrayUtils.toArray();
@@ -134,14 +112,14 @@ public class ScalaCompileMojo extends AbstractMojo {
             }).toArray(Path[]::new);
         }
 
-        Path scalaOutPath = Paths.get(outputDirectory.toURI());
+        Path scalaOutPath = getOutputDirectory();
         getLog().info("Writing Scala files in '" + scalaOutPath + "'.");
         project.addCompileSourceRoot(scalaOutPath.toString());
 
         if (addProtoSources) {
             projectHelper.addResource(
                     project,
-                    inputDirectory.getAbsolutePath(),
+                    getInputDirectoryAbsPath(),
                     Collections.singletonList("**/*.proto"),
                     Collections.emptyList()
             );
@@ -149,7 +127,7 @@ public class ScalaCompileMojo extends AbstractMojo {
 
         Path javaOutPath = null;
         if (javaOutput) {
-            javaOutPath = Paths.get(javaOutputDirectory.toURI());
+            javaOutPath = getJavaOutputDirectory();
             getLog().info("Writing Java files in '" + javaOutPath + "'.");
             project.addCompileSourceRoot(javaOutPath.toString());
         }
